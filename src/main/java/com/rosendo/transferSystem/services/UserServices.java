@@ -20,7 +20,7 @@ public class UserServices {
   UserRepository userRepository;
 
   public UserModel getUserById(UUID userId){
-    return userRepository.findById(userId).orElseThrow(); 
+    return userRepository.findById(userId).orElseThrow();
   }
 
   public List<UserModel> getAllUsers(){
