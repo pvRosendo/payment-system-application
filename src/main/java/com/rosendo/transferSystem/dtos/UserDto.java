@@ -7,6 +7,4 @@ public record UserDto(
   @NotBlank String userIdentification,
   @NotBlank String userEmail,
   @NotBlank String userPassword
-) {
-
-}
+) {}

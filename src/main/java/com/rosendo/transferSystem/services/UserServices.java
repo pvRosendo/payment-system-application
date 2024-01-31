@@ -1,5 +1,6 @@
 package com.rosendo.transferSystem.services;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +30,10 @@ public class UserServices {
   }
 
   public UserModel createUser(UserDto userDto){
+    
     var userModel = new UserModel();
+    userModel.setUserBalance(BigDecimal.ZERO);
+
     BeanUtils.copyProperties(userDto, userModel);
 
     return userRepository.save(userModel);
@@ -41,5 +45,9 @@ public class UserServices {
     BeanUtils.copyProperties(userDto, userModel);
     
     return userRepository.save(userModel);
+  }
+
+  public void deleteUserById(UUID userId) {
+    userRepository.delete(userRepository.findById(userId).orElseThrow());
   }
 }
