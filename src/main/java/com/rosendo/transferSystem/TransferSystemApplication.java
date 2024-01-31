@@ -1,13 +1,13 @@
-package com.rosendo.paymentSystem;
+package com.rosendo.transferSystem;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PicpayChallengeApplication {
+public class TransferSystemApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PicpayChallengeApplication.class, args);
+		SpringApplication.run(TransferSystemApplication.class, args);
 	}
 
 }
