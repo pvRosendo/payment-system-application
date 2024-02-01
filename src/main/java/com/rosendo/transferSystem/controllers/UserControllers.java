@@ -3,6 +3,7 @@ package com.rosendo.transferSystem.controllers;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,8 +42,17 @@ public class UserControllers {
   }
 
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Object> createUser(@RequestBody @Valid UserDto userDto){
-    return ResponseEntity.status(HttpStatus.CREATED).body(userServices.createUser(userDto));
+  public ResponseEntity<?> createUser(@RequestBody @Valid UserDto userDto){
+    
+    if(userServices.verifyIdentification(userDto.userIdentification())){
+      System.out.println("ja existe um cpf cm esse valor");
+      return ResponseEntity.status(HttpStatus.IM_USED).build();
+    }
+    
+    else{
+      return ResponseEntity.status(HttpStatus.CREATED).body(userServices.createUser(userDto));
+    }
+
   }
   
   @PutMapping(value="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

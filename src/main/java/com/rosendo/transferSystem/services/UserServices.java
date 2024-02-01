@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import com.rosendo.transferSystem.dtos.UserDto;
@@ -33,10 +34,10 @@ public class UserServices {
     
     var userModel = new UserModel();
     userModel.setUserBalance(BigDecimal.ZERO);
-
+    
     BeanUtils.copyProperties(userDto, userModel);
+    return userRepository.save(userModel); 
 
-    return userRepository.save(userModel);
   }
   
   public UserModel updateModel(UUID userId, UserDto userDto){
@@ -49,5 +50,11 @@ public class UserServices {
 
   public void deleteUserById(UUID userId) {
     userRepository.delete(userRepository.findById(userId).orElseThrow());
+  }
+
+
+  @Query("SELECT COUNT(e) > 0 FROM UserModel e WHERE e.userIdentification = :newUserIdentification")
+  public Boolean verifyIdentification(String newUserIdentification){
+    return true;
   }
 }
