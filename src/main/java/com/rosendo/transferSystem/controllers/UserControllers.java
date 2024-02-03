@@ -3,7 +3,6 @@ package com.rosendo.transferSystem.controllers;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -42,26 +41,24 @@ public class UserControllers {
   }
 
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> createUser(@RequestBody @Valid UserDto userDto){
+  public ResponseEntity<?> createUser(@RequestBody @Valid UserDto userDto) {
     
-    if(userServices.verifyIdentification(userDto.userIdentification())){
-      System.out.println("ja existe um cpf cm esse valor");
-      return ResponseEntity.status(HttpStatus.IM_USED).build();
-    }
-    
-    else{
-      return ResponseEntity.status(HttpStatus.CREATED).body(userServices.createUser(userDto));
-    }
-
+    return (userServices.findByUserIdentification(userDto) || userServices.findByUserEmail(userDto))
+    ? ResponseEntity.status(HttpStatus.IM_USED).build()
+    : ResponseEntity.status(HttpStatus.CREATED).body(userServices.createUser(userDto));
+  
   }
   
   @PutMapping(value="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Object> updateUser(@PathVariable(value = "id") UUID userId, @RequestBody @Valid UserDto userDto){
+  public ResponseEntity<Object> updateUser(
+    @PathVariable(value = "id") UUID userId, 
+    @RequestBody @Valid UserDto userDto
+  ){
     return ResponseEntity.status(HttpStatus.OK).body(userServices.updateModel(userId, userDto));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<?> deleteUserById(@PathVariable(value = "id") UUID userId){
+  public ResponseEntity<?> deleteUserById(@PathVariable(value = "id") UUID userId) {
     userServices.deleteUserById(userId);
     return ResponseEntity.noContent().build();
   }
