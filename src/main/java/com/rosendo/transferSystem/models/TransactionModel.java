@@ -3,7 +3,7 @@ package com.rosendo.transferSystem.models;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
@@ -25,7 +25,7 @@ public class TransactionModel implements Serializable {
   private UserModel senderTransaction;
   private UserModel receiverTransaction;
   private BigDecimal balanceTransaction;
-  private Date timeStamp;
+  private LocalDate timeStamp;
   private StatusTransactionEnum statusTransaction;
 
 
@@ -41,8 +41,8 @@ public class TransactionModel implements Serializable {
   public BigDecimal getBalanceTransaction() {return balanceTransaction; }
   public void setBalanceTransaction(BigDecimal balanceTransaction) {this.balanceTransaction = balanceTransaction; }
   
-  public Date getTimeStamp() {return timeStamp; }
-  public void setTimeStamp(Date timeStamp) {this.timeStamp = timeStamp; }
+  public LocalDate getTimeStamp() {return timeStamp; }
+  public void setTimeStamp(LocalDate timeStamp) {this.timeStamp = timeStamp; }
   
   public StatusTransactionEnum getStatusTransaction() {return statusTransaction; }
   public void setStatusTransaction(StatusTransactionEnum statusTransaction) {this.statusTransaction = statusTransaction; }

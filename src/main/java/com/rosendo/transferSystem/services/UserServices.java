@@ -1,11 +1,14 @@
 package com.rosendo.transferSystem.services;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.Arrays;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import com.rosendo.transferSystem.dtos.UserDto;
@@ -51,11 +54,11 @@ public class UserServices {
     userRepository.delete(userRepository.findById(userId).orElseThrow());
   }
 
-  public Boolean findByUserIdentification(UserDto userDto){
+  public Boolean findByUserDocument(UserDto userDto){
 
-    var newUserIdentification = userDto.userIdentification();
+    var newUserDocument = userDto.userDocument();
 
-    List<UserModel> listOfUsers = userRepository.findByUserIdentification(newUserIdentification);
+    List<UserModel> listOfUsers = userRepository.findByUserDocument(newUserDocument);
 
     return listOfUsers.size() > 0 ? true : false;
     
@@ -63,12 +66,23 @@ public class UserServices {
   
   public Boolean findByUserEmail(UserDto userDto){
 
-    var newUserIdentification = userDto.userEmail();
+    var newUserDocument = userDto.userEmail();
 
-    List<UserModel> listOfUsers = userRepository.findByUserEmail(newUserIdentification);
+    List<UserModel> listOfUsers = userRepository.findByUserEmail(newUserDocument);
 
     return listOfUsers.size() > 0 ? true : false;
     
+  }
+
+  public List<UserModel> updateUserModelTransaction(String userSenderDocument, String userReceiverDocument, BigDecimal userBalance){
+    UserModel userSenderModel = userRepository.getByUserDocument(userSenderDocument);
+    userSenderModel.setUserBalance(userBalance);
+    
+    UserModel userReceiverModel = userRepository.getByUserDocument(userReceiverDocument);
+    userReceiverModel.setUserBalance(userBalance.negate());
+
+    List<UserModel> updateListUsers = new ArrayList<>(Arrays.asList(userSenderModel, userReceiverModel));
+    return userRepository.saveAll(updateListUsers);
   }
 
 

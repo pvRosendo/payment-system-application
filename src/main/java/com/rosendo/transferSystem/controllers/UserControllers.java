@@ -43,7 +43,7 @@ public class UserControllers {
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> createUser(@RequestBody @Valid UserDto userDto) {
     
-    return (userServices.findByUserIdentification(userDto) || userServices.findByUserEmail(userDto))
+    return (userServices.findByUserDocument(userDto) || userServices.findByUserEmail(userDto))
     ? ResponseEntity.status(HttpStatus.IM_USED).build()
     : ResponseEntity.status(HttpStatus.CREATED).body(userServices.createUser(userDto));
   
@@ -51,7 +51,7 @@ public class UserControllers {
   
   @PutMapping(value="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Object> updateUser(
-    @PathVariable(value = "id") UUID userId, 
+    @PathVariable(value = "id") UUID userId,
     @RequestBody @Valid UserDto userDto
   ){
     return ResponseEntity.status(HttpStatus.OK).body(userServices.updateModel(userId, userDto));

@@ -10,8 +10,9 @@ import com.rosendo.transferSystem.models.UserModel;
 
 public interface UserRepository extends JpaRepository<UserModel, UUID>{
   
-  List<UserModel> findByUserIdentification(String userIdentification);
+  List<UserModel> findByUserDocument(String userDocument);
   List<UserModel> findByUserEmail(String userEmail);
+  UserModel getByUserDocument(String userDocument);
 
 }
 
