@@ -10,10 +10,10 @@ CREATE TABLE IF NOT EXISTS public.tb_users(
 
 
 CREATE TABLE IF NOT EXISTS public.tb_transactions(
-  id uuid NOT NULL,
+  id_transaction uuid NOT NULL,
   balance_transaction numeric(38, 2) NOT NULL,
-  receiver_transaction bytea NOT NULL,
-  sender_transaction bytea NOT NULL,
+  receiver_document_transaction character varying(255) NOT NULL,
+  sender_document_transaction character varying(255) NOT NULL,
   status_transaction smallint NOT NULL,
   time_stamp date
 );

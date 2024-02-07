@@ -75,11 +75,12 @@ public class UserServices {
   }
 
   public List<UserModel> updateUserModelTransaction(String userSenderDocument, String userReceiverDocument, BigDecimal userBalance){
+
     UserModel userSenderModel = userRepository.getByUserDocument(userSenderDocument);
-    userSenderModel.setUserBalance(userBalance);
-    
+    userSenderModel.setUserBalance(userSenderModel.getUserBalance().subtract(userBalance));
+
     UserModel userReceiverModel = userRepository.getByUserDocument(userReceiverDocument);
-    userReceiverModel.setUserBalance(userBalance.negate());
+    userReceiverModel.setUserBalance(userReceiverModel.getUserBalance().add(userBalance));
 
     List<UserModel> updateListUsers = new ArrayList<>(Arrays.asList(userSenderModel, userReceiverModel));
     return userRepository.saveAll(updateListUsers);

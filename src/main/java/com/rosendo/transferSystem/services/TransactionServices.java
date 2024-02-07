@@ -1,13 +1,14 @@
 package com.rosendo.transferSystem.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rosendo.transferSystem.dtos.TransactionDto;
+import com.rosendo.transferSystem.models.StatusTransactionEnum;
 import com.rosendo.transferSystem.models.TransactionModel;
 import com.rosendo.transferSystem.repositories.TransactionRepository;
 
@@ -31,16 +32,20 @@ public class TransactionServices {
   }
 
   public TransactionModel createTransaction(TransactionDto transactionDto){
-    
+
     userServices.updateUserModelTransaction(
-      transactionDto.senderTransaction().getUserDocument(),
-      transactionDto.receiverTransaction().getUserDocument(),
+      transactionDto.senderDocument(),
+      transactionDto.receiverDocument(),
       transactionDto.balanceTransaction()
     );
 
     var transaction = new TransactionModel();
-    BeanUtils.copyProperties(transactionDto, transaction);
-
-    return transaction;
+    transaction.setSenderDocumentTransaction(transactionDto.senderDocument());
+    transaction.setReceiverDocumentTransaction(transactionDto.receiverDocument());
+    transaction.setBalanceTransaction(transactionDto.balanceTransaction());
+    transaction.setStatusTransaction(StatusTransactionEnum.successfull);
+    transaction.setTimeStamp(LocalDate.now());
+    
+    return transactionRepository.save(transaction);
   }
 }
