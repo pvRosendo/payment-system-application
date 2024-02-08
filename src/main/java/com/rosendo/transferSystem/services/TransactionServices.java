@@ -1,8 +1,15 @@
 package com.rosendo.transferSystem.services;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+
+import com.rosendo.transferSystem.models.UserModel;
+import com.rosendo.transferSystem.models.UserTypeEnum;
+import com.rosendo.transferSystem.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,21 +26,21 @@ public class TransactionServices {
   TransactionRepository transactionRepository;
 
   @Autowired
-  UserServices userServices;
+  UserRepository userRepository;
 
   public List<TransactionModel> getAllTransactions(){
-    List<TransactionModel> listOfTransaction = transactionRepository.findAll();
-    return listOfTransaction;
+    return transactionRepository.findAll();
   }
 
   public TransactionModel getTransactionById(UUID transactionId){
-    var transaction = transactionRepository.findById(transactionId).orElseThrow();
-    return transaction;
+    return transactionRepository.findById(transactionId).orElseThrow();
   }
 
-  public TransactionModel createTransaction(TransactionDto transactionDto){
+  public TransactionModel createTransaction(TransactionDto transactionDto) throws Exception{
 
-    userServices.updateUserModelTransaction(
+    if(userTypeAndBalanceVerification(transactionDto.senderDocument(), transactionDto.balanceTransaction())){}
+    
+    updateUserModelTransaction(
       transactionDto.senderDocument(),
       transactionDto.receiverDocument(),
       transactionDto.balanceTransaction()
@@ -48,4 +55,32 @@ public class TransactionServices {
     
     return transactionRepository.save(transaction);
   }
+
+  public void updateUserModelTransaction(String userSenderDocument, String userReceiverDocument, BigDecimal userBalance){
+
+    UserModel userSenderModel = userRepository.getByUserDocument(userSenderDocument);
+    userSenderModel.setUserBalance(userSenderModel.getUserBalance().subtract(userBalance));
+
+    UserModel userReceiverModel = userRepository.getByUserDocument(userReceiverDocument);
+    userReceiverModel.setUserBalance(userReceiverModel.getUserBalance().add(userBalance));
+
+    List<UserModel> updateListUsers = new ArrayList<>(Arrays.asList(userSenderModel, userReceiverModel));
+    userRepository.saveAll(updateListUsers);
+  }
+
+  public Boolean userTypeAndBalanceVerification(String senderUserDocument, BigDecimal userBalance) throws Exception{
+    var senderUser = userRepository.getByUserDocument(senderUserDocument);
+    
+    if (senderUser.getUserType() != UserTypeEnum.commonUser){
+      throw new Exception("You don't have permission for realizing transactions");
+    }
+    
+    if (senderUser.getUserBalance().compareTo(userBalance) < 0){
+      throw new Exception("You don't have enough balance to carry out this transaction");
+    }
+
+    return true;
+    
+  }
+
 }

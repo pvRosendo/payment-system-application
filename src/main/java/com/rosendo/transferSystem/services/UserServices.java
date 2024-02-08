@@ -28,8 +28,7 @@ public class UserServices {
   }
 
   public List<UserModel> getAllUsers(){
-    List<UserModel> listUsers = userRepository.findAll();
-    return listUsers;
+      return userRepository.findAll();
   }
 
   public UserModel createUser(UserDto userDto){
@@ -55,36 +54,15 @@ public class UserServices {
   }
 
   public Boolean findByUserDocument(UserDto userDto){
-
-    var newUserDocument = userDto.userDocument();
-
-    List<UserModel> listOfUsers = userRepository.findByUserDocument(newUserDocument);
-
-    return listOfUsers.size() > 0 ? true : false;
-    
+    List<UserModel> listOfUsers = userRepository.findByUserDocument(userDto.userDocument());
+    return !listOfUsers.isEmpty();
   }
   
   public Boolean findByUserEmail(UserDto userDto){
-
-    var newUserDocument = userDto.userEmail();
-
-    List<UserModel> listOfUsers = userRepository.findByUserEmail(newUserDocument);
-
-    return listOfUsers.size() > 0 ? true : false;
-    
+    List<UserModel> listOfUsers = userRepository.findByUserEmail(userDto.userEmail());
+    return !listOfUsers.isEmpty();
   }
 
-  public List<UserModel> updateUserModelTransaction(String userSenderDocument, String userReceiverDocument, BigDecimal userBalance){
-
-    UserModel userSenderModel = userRepository.getByUserDocument(userSenderDocument);
-    userSenderModel.setUserBalance(userSenderModel.getUserBalance().subtract(userBalance));
-
-    UserModel userReceiverModel = userRepository.getByUserDocument(userReceiverDocument);
-    userReceiverModel.setUserBalance(userReceiverModel.getUserBalance().add(userBalance));
-
-    List<UserModel> updateListUsers = new ArrayList<>(Arrays.asList(userSenderModel, userReceiverModel));
-    return userRepository.saveAll(updateListUsers);
-  }
 
 
 }
