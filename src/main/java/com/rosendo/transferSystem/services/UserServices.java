@@ -1,10 +1,8 @@
 package com.rosendo.transferSystem.services;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.Arrays;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rosendo.transferSystem.dtos.UserDto;
+import com.rosendo.transferSystem.exceptions.ResourceNotFoundException;
+import com.rosendo.transferSystem.exceptions.UserExistsException;
 import com.rosendo.transferSystem.models.UserModel;
 import com.rosendo.transferSystem.repositories.UserRepository;
-
-//TODO implement exception
 
 @Service
 public class UserServices {
@@ -24,15 +22,20 @@ public class UserServices {
   UserRepository userRepository;
 
   public UserModel getUserById(UUID userId){
-    return userRepository.findById(userId).orElseThrow();
+    return userRepository.findById(userId)
+                          .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
   }
 
   public List<UserModel> getAllUsers(){
-      return userRepository.findAll();
+    return userRepository.findAll();
   }
 
   public UserModel createUser(UserDto userDto){
-    
+
+    if (findByUserDocument(userDto) || findByUserEmail(userDto)){
+      throw new UserExistsException("There is already a user with this document or email!");
+    }
+
     var userModel = new UserModel();
     userModel.setUserBalance(BigDecimal.ZERO);
 
@@ -43,14 +46,19 @@ public class UserServices {
   
   public UserModel updateModel(UUID userId, UserDto userDto){
     
-    UserModel userModel = userRepository.findById(userId).orElseThrow();
+    UserModel userModel = userRepository.findById(userId).orElseThrow(
+                            () -> new ResourceNotFoundException("User not found!")
+                          );
+
     BeanUtils.copyProperties(userDto, userModel);
-    
     return userRepository.save(userModel);
   }
 
   public void deleteUserById(UUID userId) {
-    userRepository.delete(userRepository.findById(userId).orElseThrow());
+    userRepository.delete(userRepository.findById(userId).orElseThrow(
+                            () -> new ResourceNotFoundException("User not found!")
+                          )
+                         );
   }
 
   public Boolean findByUserDocument(UserDto userDto){
@@ -62,7 +70,5 @@ public class UserServices {
     List<UserModel> listOfUsers = userRepository.findByUserEmail(userDto.userEmail());
     return !listOfUsers.isEmpty();
   }
-
-
 
 }

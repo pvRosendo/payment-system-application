@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rosendo.transferSystem.dtos.TransactionDto;
+import com.rosendo.transferSystem.exceptions.ResourceNotFoundException;
+import com.rosendo.transferSystem.exceptions.TransactionDeniedException;
 import com.rosendo.transferSystem.models.StatusTransactionEnum;
 import com.rosendo.transferSystem.models.TransactionModel;
 import com.rosendo.transferSystem.repositories.TransactionRepository;
@@ -33,12 +35,13 @@ public class TransactionServices {
   }
 
   public TransactionModel getTransactionById(UUID transactionId){
-    return transactionRepository.findById(transactionId).orElseThrow();
+    return transactionRepository.findById(transactionId)
+                                  .orElseThrow(() -> new ResourceNotFoundException("Transaction not found!"));
   }
 
   public TransactionModel createTransaction(TransactionDto transactionDto) throws Exception{
 
-    if(userTypeAndBalanceVerification(transactionDto.senderDocument(), transactionDto.balanceTransaction())){}
+    if(userTypeAndBalanceVerification(transactionDto.senderDocument(), transactionDto.balanceTransaction()))
     
     updateUserModelTransaction(
       transactionDto.senderDocument(),
@@ -72,11 +75,11 @@ public class TransactionServices {
     var senderUser = userRepository.getByUserDocument(senderUserDocument);
     
     if (senderUser.getUserType() != UserTypeEnum.commonUser){
-      throw new Exception("You don't have permission for realizing transactions");
+      throw new TransactionDeniedException("You don't have permission for realizing transactions");
     }
     
     if (senderUser.getUserBalance().compareTo(userBalance) < 0){
-      throw new Exception("You don't have enough balance to carry out this transaction");
+      throw new TransactionDeniedException("You don't have enough balance to carry out this transaction");
     }
 
     return true;

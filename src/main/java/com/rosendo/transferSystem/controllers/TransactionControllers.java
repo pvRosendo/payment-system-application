@@ -36,7 +36,7 @@ public class TransactionControllers {
   }
   
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<TransactionModel> getTransactionById(@PathVariable UUID transactionId){
+  public ResponseEntity<TransactionModel> getTransactionById(@PathVariable(value = "id") UUID transactionId){
     return ResponseEntity.status(HttpStatus.OK).body(transactionServices.getTransactionById(transactionId));
   }
 

@@ -29,7 +29,6 @@ public class UserControllers {
   @Autowired
   UserServices userServices;
 
-  // only used for env of development
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<UserModel>> getAllUsers(){
     return ResponseEntity.status(HttpStatus.OK).body(userServices.getAllUsers());
@@ -41,12 +40,8 @@ public class UserControllers {
   }
 
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> createUser(@RequestBody @Valid UserDto userDto) {
-    
-    return (userServices.findByUserDocument(userDto) || userServices.findByUserEmail(userDto))
-    ? ResponseEntity.status(HttpStatus.IM_USED).build()
-    : ResponseEntity.status(HttpStatus.CREATED).body(userServices.createUser(userDto));
-  
+  public ResponseEntity<?> createUser(@RequestBody @Valid UserDto userDto){
+    return ResponseEntity.status(HttpStatus.CREATED).body(userServices.createUser(userDto));
   }
   
   @PutMapping(value="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
