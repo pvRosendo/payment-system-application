@@ -71,6 +71,7 @@ public class UserModel implements Serializable {
   public void setUserBalance(BigDecimal userBalance) {
     this.userBalance = userBalance;
   }
+
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -84,6 +85,7 @@ public class UserModel implements Serializable {
     result = prime * result + ((userBalance == null) ? 0 : userBalance.hashCode());
     return result;
   }
+
   @Override
   public boolean equals(Object obj) {
     if (this == obj)
@@ -124,14 +126,8 @@ public class UserModel implements Serializable {
     } else if (!userType.equals(other.userType))
       return false;
     if (userBalance == null) {
-      if (other.userBalance != null)
-        return false;
-    } else if (!userBalance.equals(other.userBalance))
-      return false;
-    return true;
+        return other.userBalance == null;
+    } else return userBalance.equals(other.userBalance);
   }
-  
-  
-  
 
 }

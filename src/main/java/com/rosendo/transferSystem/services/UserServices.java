@@ -58,12 +58,12 @@ public class UserServices {
             .orElseThrow(() -> new ResourceNotFoundException("User not found!")));
   }
 
-  public Boolean findByUserDocument(UserDto userDto){
+  public boolean findByUserDocument(UserDto userDto){
     List<UserModel> listOfUsers = userRepository.findByUserDocument(userDto.userDocument());
     return !listOfUsers.isEmpty();
   }
   
-  public Boolean findByUserEmail(UserDto userDto){
+  public boolean findByUserEmail(UserDto userDto){
     List<UserModel> listOfUsers = userRepository.findByUserEmail(userDto.userEmail());
     return !listOfUsers.isEmpty();
   }

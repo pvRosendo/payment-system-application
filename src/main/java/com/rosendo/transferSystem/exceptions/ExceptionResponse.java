@@ -7,6 +7,6 @@ import java.util.Date;
 public record ExceptionResponse(String message, Date timestamp, String details) implements Serializable{
 
   @Serial
-  private static final long serialVersionUID = 1l;
+  private static final long serialVersionUID = 1L;
 
 }

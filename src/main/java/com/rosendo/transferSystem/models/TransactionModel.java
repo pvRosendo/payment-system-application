@@ -112,9 +112,7 @@ public class TransactionModel implements Serializable {
         return false;
     } else if (!timeStamp.equals(other.timeStamp))
       return false;
-    if (statusTransaction != other.statusTransaction)
-      return false;
-    return true;
+    return statusTransaction == other.statusTransaction;
   }
   
 }
