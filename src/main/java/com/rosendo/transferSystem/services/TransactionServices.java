@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.rosendo.transferSystem.models.UserModel;
@@ -12,7 +13,10 @@ import com.rosendo.transferSystem.models.UserTypeEnum;
 import com.rosendo.transferSystem.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.rosendo.transferSystem.dtos.TransactionDto;
 import com.rosendo.transferSystem.exceptions.ResourceNotFoundException;
@@ -26,6 +30,9 @@ public class TransactionServices {
 
   @Autowired
   TransactionRepository transactionRepository;
+
+  @Autowired
+  RestTemplate restTemplate;
 
   @Autowired
   UserRepository userRepository;
@@ -42,7 +49,8 @@ public class TransactionServices {
   public TransactionModel createTransaction(TransactionDto transactionDto) throws Exception{
 
     if(userTypeAndBalanceVerification(transactionDto.senderDocument(), transactionDto.balanceTransaction()))
-    
+    if(authorizedTransaction())
+   
     updateUserModelTransaction(
       transactionDto.senderDocument(),
       transactionDto.receiverDocument(),
@@ -84,6 +92,21 @@ public class TransactionServices {
 
     return true;
     
+  }
+
+  public Boolean authorizedTransaction(){
+    
+    var authorizationResponse = restTemplate.getForEntity(
+      "https://run.mocky.io/v3/5794d450-d2e2-4412-8131-73d0293ac1cc", 
+      Map.class
+    );
+    
+    String message = (String) authorizationResponse.getBody().get("message");
+
+    if(authorizationResponse.getStatusCode() == HttpStatus.OK && !"Autorizado".equals(message)){
+      throw new TransactionDeniedException("Transaction don't authorized!");
+    }
+    return true;
   }
 
 }
