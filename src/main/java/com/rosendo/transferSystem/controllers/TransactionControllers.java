@@ -41,7 +41,7 @@ public class TransactionControllers {
   }
 
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<TransactionModel> createTransaction(@RequestBody @Valid TransactionDto TransactionDto) throws Exception{
+  public ResponseEntity<TransactionModel> createTransaction(@RequestBody @Valid TransactionDto TransactionDto){
     return ResponseEntity.status(HttpStatus.CREATED).body(transactionServices.createTransaction(TransactionDto));
   }
 }

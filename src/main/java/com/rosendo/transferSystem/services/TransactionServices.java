@@ -2,11 +2,7 @@ package com.rosendo.transferSystem.services;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import com.rosendo.transferSystem.models.UserModel;
 import com.rosendo.transferSystem.models.UserTypeEnum;
@@ -14,7 +10,6 @@ import com.rosendo.transferSystem.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -32,10 +27,13 @@ public class TransactionServices {
   TransactionRepository transactionRepository;
 
   @Autowired
+  UserRepository userRepository;
+
+  @Autowired
   RestTemplate restTemplate;
 
   @Autowired
-  UserRepository userRepository;
+  NotificationServices notificationServices;
 
   public List<TransactionModel> getAllTransactions(){
     return transactionRepository.findAll();
@@ -46,11 +44,14 @@ public class TransactionServices {
                                   .orElseThrow(() -> new ResourceNotFoundException("Transaction not found!"));
   }
 
-  public TransactionModel createTransaction(TransactionDto transactionDto) throws Exception{
+  public TransactionModel createTransaction(TransactionDto transactionDto){
 
-    if(userTypeAndBalanceVerification(transactionDto.senderDocument(), transactionDto.balanceTransaction()))
-    if(authorizedTransaction())
-   
+    var senderUser = userRepository.getByUserDocument(transactionDto.senderDocument());
+    var receiverUser = userRepository.getByUserDocument(transactionDto.senderDocument());
+
+    userTypeAndBalanceVerification(transactionDto.senderDocument(), transactionDto.balanceTransaction());
+    authorizedTransaction();
+
     updateUserModelTransaction(
       transactionDto.senderDocument(),
       transactionDto.receiverDocument(),
@@ -63,7 +64,10 @@ public class TransactionServices {
     transaction.setBalanceTransaction(transactionDto.balanceTransaction());
     transaction.setStatusTransaction(StatusTransactionEnum.successfull);
     transaction.setTimeStamp(LocalDate.now());
-    
+
+    notificationServices.sendNotification(senderUser);
+    notificationServices.sendNotification(receiverUser);
+
     return transactionRepository.save(transaction);
   }
 
@@ -79,34 +83,32 @@ public class TransactionServices {
     userRepository.saveAll(updateListUsers);
   }
 
-  public Boolean userTypeAndBalanceVerification(String senderUserDocument, BigDecimal userBalance) throws Exception{
+  public void userTypeAndBalanceVerification(String senderUserDocument, BigDecimal userBalance) {
     var senderUser = userRepository.getByUserDocument(senderUserDocument);
-    
+
     if (senderUser.getUserType() != UserTypeEnum.commonUser){
       throw new TransactionDeniedException("You don't have permission for realizing transactions");
     }
-    
+
     if (senderUser.getUserBalance().compareTo(userBalance) < 0){
       throw new TransactionDeniedException("You don't have enough balance to carry out this transaction");
     }
 
-    return true;
-    
   }
 
-  public Boolean authorizedTransaction(){
-    
+  public void authorizedTransaction(){
+
     var authorizationResponse = restTemplate.getForEntity(
-      "https://run.mocky.io/v3/5794d450-d2e2-4412-8131-73d0293ac1cc", 
-      Map.class
+            "https://run.mocky.io/v3/5794d450-d2e2-4412-8131-73d0293ac1cc",
+            Map.class
     );
-    
-    String message = (String) authorizationResponse.getBody().get("message");
+
+    String message = (String) Objects.requireNonNull(authorizationResponse.getBody()).get("message");
 
     if(authorizationResponse.getStatusCode() == HttpStatus.OK && !"Autorizado".equals(message)){
       throw new TransactionDeniedException("Transaction don't authorized!");
     }
-    return true;
   }
+
 
 }

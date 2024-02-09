@@ -46,19 +46,16 @@ public class UserServices {
   
   public UserModel updateModel(UUID userId, UserDto userDto){
     
-    UserModel userModel = userRepository.findById(userId).orElseThrow(
-                            () -> new ResourceNotFoundException("User not found!")
-                          );
+    UserModel userModel = userRepository.findById(userId)
+                          .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
 
     BeanUtils.copyProperties(userDto, userModel);
     return userRepository.save(userModel);
   }
 
   public void deleteUserById(UUID userId) {
-    userRepository.delete(userRepository.findById(userId).orElseThrow(
-                            () -> new ResourceNotFoundException("User not found!")
-                          )
-                         );
+    userRepository.delete(userRepository.findById(userId)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found!")));
   }
 
   public Boolean findByUserDocument(UserDto userDto){
