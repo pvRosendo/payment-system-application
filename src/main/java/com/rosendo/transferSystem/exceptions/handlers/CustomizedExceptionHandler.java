@@ -2,6 +2,7 @@ package com.rosendo.transferSystem.exceptions.handlers;
 
 import java.util.Date;
 
+import com.rosendo.transferSystem.models.StatusTransactionEnum;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,36 +21,44 @@ import com.rosendo.transferSystem.exceptions.UserExistsException;
 public class CustomizedExceptionHandler extends ResponseEntityExceptionHandler{
 
   @ExceptionHandler(ResourceNotFoundException.class)
-  public ResponseEntity<ExceptionResponse> handleNotFoundException(Exception exception, WebRequest webRequest){
-
+  public ResponseEntity<ExceptionResponse> handleNotFoundException(
+          Exception exception,
+          WebRequest webRequest
+  ){
     ExceptionResponse exceptionsResponse = new ExceptionResponse(
       exception.getMessage(),
       new Date(),
-      webRequest.getDescription(false)
+      webRequest.getDescription(false),
+      null
     );
     return new ResponseEntity<>(exceptionsResponse, HttpStatus.NOT_FOUND);
   }
   
   @ExceptionHandler(UserExistsException.class)
-  public ResponseEntity<ExceptionResponse> handleUserExistsException(Exception exception, WebRequest webRequest){
-
+  public ResponseEntity<ExceptionResponse> handleUserExistsException(
+          Exception exception,
+          WebRequest webRequest
+  ){
     ExceptionResponse exceptionsResponse = new ExceptionResponse(
       exception.getMessage(),
       new Date(),
-      webRequest.getDescription(false)
+      webRequest.getDescription(false),
+      null
     );
     return new ResponseEntity<>(exceptionsResponse, HttpStatus.BAD_REQUEST);
   }
   
   @ExceptionHandler(TransactionDeniedException.class)
-  public ResponseEntity<ExceptionResponse> handleTransactionDeniedException(Exception exception, WebRequest webRequest){
-
+  public ResponseEntity<ExceptionResponse> handleTransactionDeniedException(
+          Exception exception,
+          WebRequest webRequest
+  ){
     ExceptionResponse exceptionsResponse = new ExceptionResponse(
       exception.getMessage(),
       new Date(),
-      webRequest.getDescription(false)
+      webRequest.getDescription(false),
+      StatusTransactionEnum.denied
     );
     return new ResponseEntity<>(exceptionsResponse, HttpStatus.BAD_REQUEST);
   }
-
 }

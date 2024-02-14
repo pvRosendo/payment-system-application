@@ -1,8 +1,8 @@
 package com.rosendo.transferSystem.controllers;
 
+import com.rosendo.transferSystem.dtos.TransactionDtoRequest;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rosendo.transferSystem.dtos.TransactionDto;
 import com.rosendo.transferSystem.models.TransactionModel;
 import com.rosendo.transferSystem.services.TransactionServices;
 
@@ -41,7 +41,7 @@ public class TransactionControllers {
   }
 
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<TransactionModel> createTransaction(@RequestBody @Valid TransactionDto TransactionDto){
-    return ResponseEntity.status(HttpStatus.CREATED).body(transactionServices.createTransaction(TransactionDto));
+  public ResponseEntity<TransactionModel> createTransaction(@RequestBody @Valid TransactionDtoRequest TransactionDtoRequest){
+    return ResponseEntity.status(HttpStatus.CREATED).body(transactionServices.createTransaction(TransactionDtoRequest));
   }
 }

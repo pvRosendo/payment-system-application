@@ -2,6 +2,7 @@ package com.rosendo.transferSystem.services;
 
 import com.rosendo.transferSystem.dtos.NotificationDto;
 import com.rosendo.transferSystem.exceptions.TransactionDeniedException;
+import com.rosendo.transferSystem.models.StatusTransactionEnum;
 import com.rosendo.transferSystem.models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

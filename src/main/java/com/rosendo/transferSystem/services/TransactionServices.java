@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.rosendo.transferSystem.dtos.TransactionDto;
+import com.rosendo.transferSystem.dtos.TransactionDtoRequest;
 import com.rosendo.transferSystem.exceptions.ResourceNotFoundException;
 import com.rosendo.transferSystem.models.StatusTransactionEnum;
 import com.rosendo.transferSystem.models.TransactionModel;
@@ -44,24 +44,24 @@ public class TransactionServices {
                                   .orElseThrow(() -> new ResourceNotFoundException("Transaction not found!"));
   }
 
-  public TransactionModel createTransaction(TransactionDto transactionDto){
+  public TransactionModel createTransaction(TransactionDtoRequest transactionDtoRequest){
 
-    var senderUser = userRepository.getByUserDocument(transactionDto.senderDocument());
-    var receiverUser = userRepository.getByUserDocument(transactionDto.senderDocument());
+    var senderUser = userRepository.getByUserDocument(transactionDtoRequest.senderDocument());
+    var receiverUser = userRepository.getByUserDocument(transactionDtoRequest.senderDocument());
 
-    verificationService.userTypeAndBalanceVerification(transactionDto.senderDocument(), transactionDto.balanceTransaction());
+    verificationService.userTypeAndBalanceVerification(transactionDtoRequest.senderDocument(), transactionDtoRequest.balanceTransaction());
     verificationService.authorizedTransaction();
 
     updateUserModelTransaction(
-      transactionDto.senderDocument(),
-      transactionDto.receiverDocument(),
-      transactionDto.balanceTransaction()
+      transactionDtoRequest.senderDocument(),
+      transactionDtoRequest.receiverDocument(),
+      transactionDtoRequest.balanceTransaction()
     );
 
     var transaction = new TransactionModel();
-    transaction.setSenderDocumentTransaction(transactionDto.senderDocument());
-    transaction.setReceiverDocumentTransaction(transactionDto.receiverDocument());
-    transaction.setBalanceTransaction(transactionDto.balanceTransaction());
+    transaction.setSenderDocumentTransaction(transactionDtoRequest.senderDocument());
+    transaction.setReceiverDocumentTransaction(transactionDtoRequest.receiverDocument());
+    transaction.setBalanceTransaction(transactionDtoRequest.balanceTransaction());
     transaction.setStatusTransaction(StatusTransactionEnum.successfull);
     transaction.setTimeStamp(LocalDate.now());
 

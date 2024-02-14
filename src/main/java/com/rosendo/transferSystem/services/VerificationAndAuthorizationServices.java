@@ -31,7 +31,6 @@ public class VerificationAndAuthorizationServices {
         if (senderUser.getUserBalance().compareTo(userBalance) < 0){
             throw new TransactionDeniedException("You don't have enough balance to carry out this transaction");
         }
-
     }
 
     public void authorizedTransaction(){
