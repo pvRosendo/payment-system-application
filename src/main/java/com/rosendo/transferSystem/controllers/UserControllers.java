@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rosendo.transferSystem.dtos.UserDto;
+import com.rosendo.transferSystem.dtos.UserDtoRequest;
 import com.rosendo.transferSystem.models.UserModel;
 import com.rosendo.transferSystem.services.UserServices;
 
@@ -40,16 +40,16 @@ public class UserControllers {
   }
 
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> createUser(@RequestBody @Valid UserDto userDto){
-    return ResponseEntity.status(HttpStatus.CREATED).body(userServices.createUser(userDto));
+  public ResponseEntity<?> createUser(@RequestBody @Valid UserDtoRequest userDtoRequest){
+    return ResponseEntity.status(HttpStatus.CREATED).body(userServices.createUser(userDtoRequest));
   }
   
   @PutMapping(value="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Object> updateUser(
     @PathVariable(value = "id") UUID userId,
-    @RequestBody @Valid UserDto userDto
+    @RequestBody @Valid UserDtoRequest userDtoRequest
   ){
-    return ResponseEntity.status(HttpStatus.OK).body(userServices.updateModel(userId, userDto));
+    return ResponseEntity.status(HttpStatus.OK).body(userServices.updateModel(userId, userDtoRequest));
   }
 
   @DeleteMapping("/{id}")

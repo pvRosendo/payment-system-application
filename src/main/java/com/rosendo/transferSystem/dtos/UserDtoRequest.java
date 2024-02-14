@@ -5,7 +5,7 @@ import com.rosendo.transferSystem.models.UserTypeEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record UserDto(
+public record UserDtoRequest(
   @NotBlank String userName,
   @NotBlank String userDocument,
   @NotBlank String userEmail,

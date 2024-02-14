@@ -3,6 +3,7 @@ package com.rosendo.transferSystem.models;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
@@ -73,61 +74,25 @@ public class UserModel implements Serializable {
   }
 
   @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
-    result = prime * result + ((userName == null) ? 0 : userName.hashCode());
-    result = prime * result + ((userDocument == null) ? 0 : userDocument.hashCode());
-    result = prime * result + ((userEmail == null) ? 0 : userEmail.hashCode());
-    result = prime * result + ((userPassword == null) ? 0 : userPassword.hashCode());
-    result = prime * result + ((userType == null) ? 0 : userType.hashCode());
-    result = prime * result + ((userBalance == null) ? 0 : userBalance.hashCode());
-    return result;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    UserModel userModel = (UserModel) o;
+
+    if (!Objects.equals(id, userModel.id)) return false;
+    if (!Objects.equals(userDocument, userModel.userDocument))
+      return false;
+    if (!Objects.equals(userEmail, userModel.userEmail)) return false;
+    return Objects.equals(userPassword, userModel.userPassword);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    UserModel other = (UserModel) obj;
-    if (id == null) {
-      if (other.id != null)
-        return false;
-    } else if (!id.equals(other.id))
-      return false;
-    if (userName == null) {
-      if (other.userName != null)
-        return false;
-    } else if (!userName.equals(other.userName))
-      return false;
-    if (userDocument == null) {
-      if (other.userDocument != null)
-        return false;
-    } else if (!userDocument.equals(other.userDocument))
-      return false;
-    if (userEmail == null) {
-      if (other.userEmail != null)
-        return false;
-    } else if (!userEmail.equals(other.userEmail))
-      return false;
-    if (userPassword == null) {
-      if (other.userPassword != null)
-        return false;
-    } else if (!userPassword.equals(other.userPassword))
-      return false;
-    if (userType == null) {
-      if (other.userType != null)
-        return false;
-    } else if (!userType.equals(other.userType))
-      return false;
-    if (userBalance == null) {
-        return other.userBalance == null;
-    } else return userBalance.equals(other.userBalance);
+  public int hashCode() {
+    int result = id != null ? id.hashCode() : 0;
+    result = 31 * result + (userDocument != null ? userDocument.hashCode() : 0);
+    result = 31 * result + (userEmail != null ? userEmail.hashCode() : 0);
+    result = 31 * result + (userPassword != null ? userPassword.hashCode() : 0);
+    return result;
   }
-
 }
