@@ -1,10 +1,10 @@
-package com.rosendo.transferSystem.controllers;
+package com.rosendo.transferSystem.controllers.transactions;
 
-import com.rosendo.transferSystem.dtos.TransactionDtoRequest;
+import com.rosendo.transferSystem.domain.transactions.dtos.TransactionDtoRequest;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rosendo.transferSystem.models.TransactionModel;
-import com.rosendo.transferSystem.services.TransactionServices;
+import com.rosendo.transferSystem.domain.transactions.models.TransactionModel;
+import com.rosendo.transferSystem.domain.transactions.services.TransactionServices;
 
 import jakarta.validation.Valid;
 

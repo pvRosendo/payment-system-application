@@ -1,4 +1,4 @@
-package com.rosendo.transferSystem.configs;
+package com.rosendo.transferSystem.infrastructure.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

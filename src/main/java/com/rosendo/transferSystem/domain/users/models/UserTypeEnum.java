@@ -1,4 +1,4 @@
-package com.rosendo.transferSystem.models;
+package com.rosendo.transferSystem.domain.users.models;
 
 public enum UserTypeEnum {
   storekeeper,

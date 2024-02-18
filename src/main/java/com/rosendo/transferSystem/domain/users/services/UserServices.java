@@ -1,20 +1,20 @@
-package com.rosendo.transferSystem.services;
+package com.rosendo.transferSystem.domain.users.services;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-import com.rosendo.transferSystem.dtos.UserDtoResponse;
+import com.rosendo.transferSystem.domain.users.dtos.UserDtoResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
-import com.rosendo.transferSystem.dtos.UserDtoRequest;
+import com.rosendo.transferSystem.domain.users.dtos.UserDtoRequest;
 import com.rosendo.transferSystem.exceptions.ResourceNotFoundException;
 import com.rosendo.transferSystem.exceptions.UserExistsException;
-import com.rosendo.transferSystem.models.UserModel;
-import com.rosendo.transferSystem.repositories.UserRepository;
+import com.rosendo.transferSystem.domain.users.models.UserModel;
+import com.rosendo.transferSystem.domain.users.repositories.UserRepository;
 
 @Service
 public class UserServices {

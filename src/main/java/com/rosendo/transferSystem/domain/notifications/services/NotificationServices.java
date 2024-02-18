@@ -1,9 +1,8 @@
-package com.rosendo.transferSystem.services;
+package com.rosendo.transferSystem.domain.notifications.services;
 
-import com.rosendo.transferSystem.dtos.NotificationDto;
+import com.rosendo.transferSystem.domain.notifications.dtos.NotificationDto;
 import com.rosendo.transferSystem.exceptions.TransactionDeniedException;
-import com.rosendo.transferSystem.models.StatusTransactionEnum;
-import com.rosendo.transferSystem.models.UserModel;
+import com.rosendo.transferSystem.domain.users.models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

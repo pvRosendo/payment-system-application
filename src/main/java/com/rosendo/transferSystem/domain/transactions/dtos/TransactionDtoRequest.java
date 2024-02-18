@@ -1,4 +1,4 @@
-package com.rosendo.transferSystem.dtos;
+package com.rosendo.transferSystem.domain.transactions.dtos;
 
 import java.math.BigDecimal;
 

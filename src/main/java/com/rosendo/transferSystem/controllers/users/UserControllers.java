@@ -1,4 +1,4 @@
-package com.rosendo.transferSystem.controllers;
+package com.rosendo.transferSystem.controllers.users;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rosendo.transferSystem.dtos.UserDtoRequest;
-import com.rosendo.transferSystem.models.UserModel;
-import com.rosendo.transferSystem.services.UserServices;
+import com.rosendo.transferSystem.domain.users.dtos.UserDtoRequest;
+import com.rosendo.transferSystem.domain.users.models.UserModel;
+import com.rosendo.transferSystem.domain.users.services.UserServices;
 
 import jakarta.validation.Valid;
 

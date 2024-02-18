@@ -2,7 +2,7 @@ package com.rosendo.transferSystem.exceptions.handlers;
 
 import java.util.Date;
 
-import com.rosendo.transferSystem.models.StatusTransactionEnum;
+import com.rosendo.transferSystem.domain.transactions.models.StatusTransactionEnum;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

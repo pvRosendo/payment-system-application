@@ -1,8 +1,8 @@
-package com.rosendo.transferSystem.services;
+package com.rosendo.transferSystem.domain.transactions.services;
 
 import com.rosendo.transferSystem.exceptions.TransactionDeniedException;
-import com.rosendo.transferSystem.models.UserTypeEnum;
-import com.rosendo.transferSystem.repositories.UserRepository;
+import com.rosendo.transferSystem.domain.users.models.UserTypeEnum;
+import com.rosendo.transferSystem.domain.users.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

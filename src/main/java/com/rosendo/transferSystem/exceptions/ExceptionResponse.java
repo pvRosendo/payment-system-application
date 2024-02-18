@@ -1,6 +1,6 @@
 package com.rosendo.transferSystem.exceptions;
 
-import com.rosendo.transferSystem.models.StatusTransactionEnum;
+import com.rosendo.transferSystem.domain.transactions.models.StatusTransactionEnum;
 
 import java.io.Serial;
 import java.io.Serializable;

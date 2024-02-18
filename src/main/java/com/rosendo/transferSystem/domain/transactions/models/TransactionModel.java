@@ -1,4 +1,4 @@
-package com.rosendo.transferSystem.models;
+package com.rosendo.transferSystem.domain.transactions.models;
 
 import java.io.Serial;
 import java.io.Serializable;

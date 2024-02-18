@@ -1,21 +1,22 @@
-package com.rosendo.transferSystem.services;
+package com.rosendo.transferSystem.domain.transactions.services;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
-import com.rosendo.transferSystem.models.UserModel;
-import com.rosendo.transferSystem.repositories.UserRepository;
+import com.rosendo.transferSystem.domain.users.models.UserModel;
+import com.rosendo.transferSystem.domain.users.repositories.UserRepository;
 
+import com.rosendo.transferSystem.domain.notifications.services.NotificationServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.rosendo.transferSystem.dtos.TransactionDtoRequest;
+import com.rosendo.transferSystem.domain.transactions.dtos.TransactionDtoRequest;
 import com.rosendo.transferSystem.exceptions.ResourceNotFoundException;
-import com.rosendo.transferSystem.models.StatusTransactionEnum;
-import com.rosendo.transferSystem.models.TransactionModel;
-import com.rosendo.transferSystem.repositories.TransactionRepository;
+import com.rosendo.transferSystem.domain.transactions.models.StatusTransactionEnum;
+import com.rosendo.transferSystem.domain.transactions.models.TransactionModel;
+import com.rosendo.transferSystem.domain.transactions.repositories.TransactionRepository;
 
 @Service
 public class TransactionServices {
