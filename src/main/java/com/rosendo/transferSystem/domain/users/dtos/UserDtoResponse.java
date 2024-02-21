@@ -8,5 +8,4 @@ public record UserDtoResponse(
         @NotBlank String userName,
         @NotBlank String userEmail,
         @NotNull UserTypeEnum userType
-) {
-}
+) {}
