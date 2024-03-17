@@ -20,10 +20,9 @@ public class ScheduledTransferControllers {
     ScheduledTransferServices scheduledTransferServices;
 
 
-    @GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ScheduledTransferModel> getScheduledTransferById(
-            @PathVariable("id") UUID idScheduledTransfer)
-    {
+            @PathVariable("id") UUID idScheduledTransfer) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(scheduledTransferServices.getScheduledTransferById(idScheduledTransfer));
     }
@@ -31,7 +30,7 @@ public class ScheduledTransferControllers {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ScheduledTransferModel> createScheduledTransfer(
-            @RequestBody @Valid ScheduledTransferDto scheduledTransferDto){
+            @RequestBody @Valid ScheduledTransferDto scheduledTransferDto) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(scheduledTransferServices.createScheduledTransfer(scheduledTransferDto));

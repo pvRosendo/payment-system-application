@@ -50,7 +50,10 @@ public class TransactionServices {
     var senderUser = userRepository.getByUserDocument(transactionDtoRequest.senderDocument());
     var receiverUser = userRepository.getByUserDocument(transactionDtoRequest.senderDocument());
 
-    verificationService.userTypeAndBalanceVerification(transactionDtoRequest.senderDocument(), transactionDtoRequest.balanceTransaction());
+    verificationService.userTypeAndBalanceVerification(
+            transactionDtoRequest.senderDocument(),
+            transactionDtoRequest.balanceTransaction()
+    );
     verificationService.authorizedTransaction();
 
     updateUserModelTransaction(
