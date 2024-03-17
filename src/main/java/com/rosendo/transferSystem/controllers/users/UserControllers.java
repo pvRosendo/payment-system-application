@@ -3,6 +3,7 @@ package com.rosendo.transferSystem.controllers.users;
 import java.util.List;
 import java.util.UUID;
 
+import com.rosendo.transferSystem.domain.users.dtos.UserDtoRequestBalance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -51,6 +52,17 @@ public class UserControllers {
   ){
     return ResponseEntity.status(HttpStatus.OK).body(userServices.updateModel(userId, userDtoRequest));
   }
+
+  @PutMapping(value="/deposits/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Object> updateUserBalance(
+    @PathVariable(value = "id") UUID userId,
+    @RequestBody @Valid UserDtoRequestBalance userDtoRequestBalance
+  ){
+    return ResponseEntity.status(HttpStatus.OK)
+            .body(userServices.updateUserBalance(userId, userDtoRequestBalance.newBalance()));
+  }
+
+
 
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteUserById(@PathVariable(value = "id") UUID userId) {

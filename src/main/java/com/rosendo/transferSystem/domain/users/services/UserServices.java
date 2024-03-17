@@ -72,6 +72,15 @@ public class UserServices {
     );
   }
 
+  public UserModel updateUserBalance(UUID userId, BigDecimal newBalance){
+    UserModel userModel = userRepository.findById(userId)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
+
+    userModel.setUserBalance(newBalance);
+
+    return userRepository.save(userModel);
+  }
+
   public void deleteUserById(UUID userId) {
     userRepository.delete(userRepository.findById(userId)
             .orElseThrow(() -> new ResourceNotFoundException("User not found!")));
