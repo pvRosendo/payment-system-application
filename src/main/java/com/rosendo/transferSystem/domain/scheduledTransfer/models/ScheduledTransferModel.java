@@ -2,6 +2,7 @@ package com.rosendo.transferSystem.domain.scheduledTransfer.models;
 
 import com.rosendo.transferSystem.domain.transactions.models.StatusTransactionEnum;
 import jakarta.persistence.*;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
 import java.io.Serializable;

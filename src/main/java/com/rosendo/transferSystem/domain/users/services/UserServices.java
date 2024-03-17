@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
+import com.rosendo.transferSystem.controllers.users.UserControllers;
 import com.rosendo.transferSystem.domain.users.dtos.UserDtoResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import com.rosendo.transferSystem.exceptions.UserExistsException;
 import com.rosendo.transferSystem.domain.users.models.UserModel;
 import com.rosendo.transferSystem.domain.users.repositories.UserRepository;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @Service
 public class UserServices {
 
@@ -26,6 +30,8 @@ public class UserServices {
     var user = userRepository.findById(userId)
             .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
 
+    user.add(linkTo(methodOn(UserControllers.class).getAllUsers()).withRel("List of users"));
+
     return new UserDtoResponse(
           user.getUserName(),
           user.getUserEmail(),
@@ -34,7 +40,11 @@ public class UserServices {
   }
 
   public List<UserModel> getAllUsers(){
-    return userRepository.findAll();
+    List<UserModel> listOfUsers = userRepository.findAll();
+    for (UserModel user : listOfUsers){
+      user.add(linkTo(methodOn(UserControllers.class).getUserById(user.getId())).withSelfRel());
+    }
+    return listOfUsers;
   }
 
   public UserDtoResponse createUser(UserDtoRequest userDtoRequest){
@@ -53,6 +63,8 @@ public class UserServices {
     userModel.setUserBalance(BigDecimal.ZERO);
 
     BeanUtils.copyProperties(userDtoRequest, userModel);
+    userModel.add(linkTo(methodOn(UserControllers.class).getUserById(userModel.getId())).withSelfRel());
+
     userRepository.save(userModel);
 
     return response;
@@ -63,6 +75,8 @@ public class UserServices {
     UserModel userModel = userRepository.findById(userId)
                           .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
     BeanUtils.copyProperties(userDtoRequest, userModel);
+    userModel.add(linkTo(methodOn(UserControllers.class).getUserById(userModel.getId())).withSelfRel());
+
     userRepository.save(userModel);
 
     return new UserDtoResponse(
@@ -77,6 +91,7 @@ public class UserServices {
             .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
 
     userModel.setUserBalance(newBalance);
+    userModel.add(linkTo(methodOn(UserControllers.class).getUserById(userModel.getId())).withSelfRel());
 
     return userRepository.save(userModel);
   }

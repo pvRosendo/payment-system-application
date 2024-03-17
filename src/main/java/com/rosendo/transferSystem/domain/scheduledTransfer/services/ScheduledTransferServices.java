@@ -4,7 +4,6 @@ import com.rosendo.transferSystem.domain.scheduledTransfer.dtos.ScheduledTransfe
 import com.rosendo.transferSystem.domain.scheduledTransfer.models.ScheduledTransferModel;
 import com.rosendo.transferSystem.domain.scheduledTransfer.repository.ScheduledTransferRepository;
 import com.rosendo.transferSystem.domain.transactions.dtos.TransactionDtoRequest;
-import com.rosendo.transferSystem.domain.transactions.models.StatusTransactionEnum;
 import com.rosendo.transferSystem.domain.transactions.services.TransactionServices;
 import com.rosendo.transferSystem.domain.transactions.services.VerificationAndAuthorizationServices;
 import com.rosendo.transferSystem.exceptions.ResourceNotFoundException;

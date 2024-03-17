@@ -19,7 +19,6 @@ public class ScheduledTransferControllers {
     @Autowired
     ScheduledTransferServices scheduledTransferServices;
 
-
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ScheduledTransferModel> getScheduledTransferById(
             @PathVariable("id") UUID idScheduledTransfer) {

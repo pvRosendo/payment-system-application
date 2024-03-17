@@ -11,10 +11,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.springframework.hateoas.RepresentationModel;
 
 @Entity
 @Table(name="TB_TRANSACTIONS")
-public class TransactionModel implements Serializable {
+public class TransactionModel extends RepresentationModel<TransactionModel>implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 1L;

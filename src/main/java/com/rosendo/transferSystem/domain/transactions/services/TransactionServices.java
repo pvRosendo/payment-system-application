@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
+import com.rosendo.transferSystem.controllers.transactions.TransactionControllers;
 import com.rosendo.transferSystem.domain.users.models.UserModel;
 import com.rosendo.transferSystem.domain.users.repositories.UserRepository;
 
@@ -17,6 +18,9 @@ import com.rosendo.transferSystem.exceptions.ResourceNotFoundException;
 import com.rosendo.transferSystem.domain.transactions.models.StatusTransactionEnum;
 import com.rosendo.transferSystem.domain.transactions.models.TransactionModel;
 import com.rosendo.transferSystem.domain.transactions.repositories.TransactionRepository;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class TransactionServices {
@@ -37,12 +41,23 @@ public class TransactionServices {
   VerificationAndAuthorizationServices verificationService;
 
   public List<TransactionModel> getAllTransactions(){
-    return transactionRepository.findAll();
+    List<TransactionModel>listOfTransactions = transactionRepository.findAll();
+
+    for (TransactionModel transaction : listOfTransactions){
+      transaction.add(linkTo(methodOn(TransactionControllers.class)
+              .getTransactionById(transaction.getIdTransaction())).withSelfRel());
+    }
+
+    return listOfTransactions;
   }
 
   public TransactionModel getTransactionById(UUID transactionId){
-    return transactionRepository.findById(transactionId)
-                                  .orElseThrow(() -> new ResourceNotFoundException("Transaction not found!"));
+    TransactionModel transaction = transactionRepository.findById(transactionId)
+            .orElseThrow(() -> new ResourceNotFoundException("Transaction not found!"));
+
+    transaction.add(linkTo(methodOn(TransactionControllers.class).getAllTransactions()).withRel("List of Transactions"));
+
+    return transaction;
   }
 
   public TransactionModel createTransaction(TransactionDtoRequest transactionDtoRequest){
@@ -68,6 +83,9 @@ public class TransactionServices {
     transaction.setBalanceTransaction(transactionDtoRequest.balanceTransaction());
     transaction.setStatusTransaction(StatusTransactionEnum.successfull);
     transaction.setTimeStamp(LocalDate.now());
+
+    transaction.add(linkTo(methodOn(TransactionControllers.class)
+            .getTransactionById(transaction.getIdTransaction())).withSelfRel());
 
     notificationServices.sendNotification(senderUser);
     notificationServices.sendNotification(receiverUser);
