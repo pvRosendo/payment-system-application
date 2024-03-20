@@ -60,7 +60,7 @@ public class ScheduledTransferServices extends ScheduledConfigs {
     }
 
     @Scheduled(fixedDelay = HOUR, zone = TIME_ZONE)
-    public void realizeScheduledTransfer(ScheduledTransferDto scheduledTransferDto){
+    public void realizeScheduledTransfer(){
 
         List<ScheduledTransferModel> listTransfers = scheduledTransferRepository.findAll();
 
@@ -69,9 +69,9 @@ public class ScheduledTransferServices extends ScheduledConfigs {
 
                 transactionServices.createTransaction(
                         new TransactionDtoRequest(
-                                scheduledTransferDto.senderDocument(),
-                                scheduledTransferDto.receiverDocument(),
-                                scheduledTransferDto.balanceTransaction()
+                                transfer.getSenderScheduledTransfer(),
+                                transfer.getReceiverScheduledTransfer(),
+                                transfer.getBalanceTransaction()
                         )
                 );
             }
