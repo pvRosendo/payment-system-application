@@ -15,6 +15,6 @@ CREATE TABLE IF NOT EXISTS public.tb_transactions(
   receiver_document_transaction character varying(255) NOT NULL,
   sender_document_transaction character varying(255) NOT NULL,
   status_transaction smallint NOT NULL,
-  time_stamp date
+  time_stamp TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

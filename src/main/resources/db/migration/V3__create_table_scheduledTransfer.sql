@@ -4,6 +4,6 @@ CREATE TABLE IF NOT EXISTS public.tb_scheduled(
   receiver_scheduled_transfer character varying(255) NOT NULL,
   sender_scheduled_transfer character varying(255) NOT NULL,
   status_transaction smallint NOT NULL,
-  time_stamp date
+  time_stamp TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

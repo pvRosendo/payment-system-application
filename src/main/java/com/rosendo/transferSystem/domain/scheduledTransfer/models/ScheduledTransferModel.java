@@ -8,6 +8,8 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -24,7 +26,7 @@ public class ScheduledTransferModel implements Serializable {
     private String SenderScheduledTransfer;
     private String receiverScheduledTransfer;
     private BigDecimal balanceTransaction;
-    private LocalDate timeStamp;
+    private LocalDateTime timeStamp;
     private StatusTransactionEnum statusTransaction;
 
     public UUID getIdScheduledTransfer() {
@@ -59,11 +61,11 @@ public class ScheduledTransferModel implements Serializable {
         this.balanceTransaction = balanceTransaction;
     }
 
-    public LocalDate getTimeStamp() {
+    public LocalDateTime getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(LocalDate timeStamp) {
+    public void setTimeStamp(LocalDateTime timeStamp) {
         this.timeStamp = timeStamp;
     }
 

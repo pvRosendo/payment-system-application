@@ -2,7 +2,10 @@ package com.rosendo.transferSystem.domain.transactions.services;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
+import java.util.logging.Logger;
 
 import com.rosendo.transferSystem.controllers.transactions.TransactionControllers;
 import com.rosendo.transferSystem.domain.users.models.UserModel;
@@ -40,6 +43,8 @@ public class TransactionServices {
   @Autowired
   VerificationAndAuthorizationServices verificationService;
 
+  private Logger logger = Logger.getLogger(TransactionServices.class.getName());
+
   public List<TransactionModel> getAllTransactions(){
     List<TransactionModel>listOfTransactions = transactionRepository.findAll();
 
@@ -62,31 +67,40 @@ public class TransactionServices {
 
   public TransactionModel createTransaction(TransactionDtoRequest transactionDtoRequest){
 
+    logger.info("creating the transaction");
+
+    logger.info("get the users by documents");
     var senderUser = userRepository.getByUserDocument(transactionDtoRequest.senderDocument());
     var receiverUser = userRepository.getByUserDocument(transactionDtoRequest.senderDocument());
 
+    logger.info("verifying the balance");
     verificationService.userTypeAndBalanceVerification(
             transactionDtoRequest.senderDocument(),
             transactionDtoRequest.balanceTransaction()
     );
+
+    logger.info("verifying the auth");
     verificationService.authorizedTransaction();
 
+    logger.info("att the users");
     updateUserModelTransaction(
       transactionDtoRequest.senderDocument(),
       transactionDtoRequest.receiverDocument(),
       transactionDtoRequest.balanceTransaction()
     );
 
+    logger.info("creating the transaction for db");
     var transaction = new TransactionModel();
     transaction.setSenderDocumentTransaction(transactionDtoRequest.senderDocument());
     transaction.setReceiverDocumentTransaction(transactionDtoRequest.receiverDocument());
     transaction.setBalanceTransaction(transactionDtoRequest.balanceTransaction());
     transaction.setStatusTransaction(StatusTransactionEnum.successfull);
-    transaction.setTimeStamp(LocalDate.now());
+    transaction.setTimeStamp(LocalDateTime.now());
 
     transaction.add(linkTo(methodOn(TransactionControllers.class)
             .getTransactionById(transaction.getIdTransaction())).withSelfRel());
 
+    logger.info("creating the notify");
     notificationServices.sendNotification(senderUser);
     notificationServices.sendNotification(receiverUser);
 

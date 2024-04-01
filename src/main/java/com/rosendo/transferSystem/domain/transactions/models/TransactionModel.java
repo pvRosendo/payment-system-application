@@ -4,6 +4,8 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
@@ -26,7 +28,7 @@ public class TransactionModel extends RepresentationModel<TransactionModel>imple
   private String senderDocumentTransaction;
   private String receiverDocumentTransaction;
   private BigDecimal balanceTransaction;
-  private LocalDate timeStamp;
+  private LocalDateTime timeStamp;
   private StatusTransactionEnum statusTransaction;
 
   public UUID getIdTransaction() {
@@ -53,10 +55,10 @@ public class TransactionModel extends RepresentationModel<TransactionModel>imple
   public void setBalanceTransaction(BigDecimal balanceTransaction) {
     this.balanceTransaction = balanceTransaction;
   }
-  public LocalDate getTimeStamp() {
+  public LocalDateTime getTimeStamp() {
     return timeStamp;
   }
-  public void setTimeStamp(LocalDate timeStamp) {
+  public void setTimeStamp(LocalDateTime timeStamp) {
     this.timeStamp = timeStamp;
   }
   public StatusTransactionEnum getStatusTransaction() {
