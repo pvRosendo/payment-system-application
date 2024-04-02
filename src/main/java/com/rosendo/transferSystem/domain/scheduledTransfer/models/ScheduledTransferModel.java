@@ -2,14 +2,11 @@ package com.rosendo.transferSystem.domain.scheduledTransfer.models;
 
 import com.rosendo.transferSystem.domain.transactions.models.StatusTransactionEnum;
 import jakarta.persistence.*;
-import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -77,7 +74,6 @@ public class ScheduledTransferModel implements Serializable {
         this.statusTransaction = statusTransaction;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,7 +87,10 @@ public class ScheduledTransferModel implements Serializable {
             return false;
         if (!Objects.equals(receiverScheduledTransfer, that.receiverScheduledTransfer))
             return false;
-        return Objects.equals(timeStamp, that.timeStamp);
+        if (!Objects.equals(balanceTransaction, that.balanceTransaction))
+            return false;
+        if (!Objects.equals(timeStamp, that.timeStamp)) return false;
+        return statusTransaction == that.statusTransaction;
     }
 
     @Override
@@ -99,7 +98,9 @@ public class ScheduledTransferModel implements Serializable {
         int result = idScheduledTransfer != null ? idScheduledTransfer.hashCode() : 0;
         result = 31 * result + (SenderScheduledTransfer != null ? SenderScheduledTransfer.hashCode() : 0);
         result = 31 * result + (receiverScheduledTransfer != null ? receiverScheduledTransfer.hashCode() : 0);
+        result = 31 * result + (balanceTransaction != null ? balanceTransaction.hashCode() : 0);
         result = 31 * result + (timeStamp != null ? timeStamp.hashCode() : 0);
+        result = 31 * result + (statusTransaction != null ? statusTransaction.hashCode() : 0);
         return result;
     }
 }

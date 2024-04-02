@@ -1,9 +1,7 @@
 package com.rosendo.transferSystem.domain.transactions.services;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -80,7 +78,7 @@ public class TransactionServices {
     );
 
     logger.info("verifying the auth");
-    verificationService.authorizedTransaction();
+    // verificationService.authorizedTransaction();
 
     logger.info("att the users");
     updateUserModelTransaction(
@@ -100,9 +98,9 @@ public class TransactionServices {
     transaction.add(linkTo(methodOn(TransactionControllers.class)
             .getTransactionById(transaction.getIdTransaction())).withSelfRel());
 
-    logger.info("creating the notify");
-    notificationServices.sendNotification(senderUser);
-    notificationServices.sendNotification(receiverUser);
+//    logger.info("creating the notify");
+//    notificationServices.sendNotification(senderUser);
+//    notificationServices.sendNotification(receiverUser);
 
     return transactionRepository.save(transaction);
   }

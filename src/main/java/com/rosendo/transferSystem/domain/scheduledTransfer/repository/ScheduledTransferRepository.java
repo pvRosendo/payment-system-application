@@ -8,6 +8,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ScheduledTransferRepository extends JpaRepository<ScheduledTransferModel, UUID> {
-    List<ScheduledTransferModel> findByTimeStamp(LocalDateTime timeStamp);
-    ScheduledTransferModel getByTimeStamp(LocalDateTime timeStamp);
+    List<ScheduledTransferModel> findByTimeStamp(LocalDateTime dateTime);
 }

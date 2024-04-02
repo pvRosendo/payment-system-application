@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 public record ScheduledTransferDto(
         @NotBlank String senderDocument,
