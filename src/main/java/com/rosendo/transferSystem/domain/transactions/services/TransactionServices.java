@@ -41,11 +41,14 @@ public class TransactionServices {
   @Autowired
   VerificationAndAuthorizationServices verificationService;
 
-  private Logger logger = Logger.getLogger(TransactionServices.class.getName());
+  private final Logger logger = Logger.getLogger(TransactionServices.class.getName());
 
   public List<TransactionModel> getAllTransactions(){
+
+    logger.info("Collecting and create the list with transactions.");
     List<TransactionModel>listOfTransactions = transactionRepository.findAll();
 
+    logger.info("Adding the link of hypertext.");
     for (TransactionModel transaction : listOfTransactions){
       transaction.add(linkTo(methodOn(TransactionControllers.class)
               .getTransactionById(transaction.getIdTransaction())).withSelfRel());
@@ -55,9 +58,12 @@ public class TransactionServices {
   }
 
   public TransactionModel getTransactionById(UUID transactionId){
+
+    logger.info("Finding the transaction.");
     TransactionModel transaction = transactionRepository.findById(transactionId)
             .orElseThrow(() -> new ResourceNotFoundException("Transaction not found!"));
 
+    logger.info("Adding the link of hypertext");
     transaction.add(linkTo(methodOn(TransactionControllers.class).getAllTransactions()).withRel("List of Transactions"));
 
     return transaction;
@@ -65,29 +71,26 @@ public class TransactionServices {
 
   public TransactionModel createTransaction(TransactionDtoRequest transactionDtoRequest){
 
-    logger.info("creating the transaction");
+    logger.info("Creating the transaction");
 
-    logger.info("get the users by documents");
+    logger.info("Get the users by documents");
     var senderUser = userRepository.getByUserDocument(transactionDtoRequest.senderDocument());
     var receiverUser = userRepository.getByUserDocument(transactionDtoRequest.senderDocument());
 
-    logger.info("verifying the balance");
+    logger.info("Verifying the balance of the sender user.");
     verificationService.userTypeAndBalanceVerification(
             transactionDtoRequest.senderDocument(),
             transactionDtoRequest.balanceTransaction()
     );
 
-    logger.info("verifying the auth");
-    // verificationService.authorizedTransaction();
-
-    logger.info("att the users");
+    logger.info("Update users information in table of Users.");
     updateUserModelTransaction(
       transactionDtoRequest.senderDocument(),
       transactionDtoRequest.receiverDocument(),
       transactionDtoRequest.balanceTransaction()
     );
 
-    logger.info("creating the transaction for db");
+    logger.info("Setting the model of transaction for database.");
     var transaction = new TransactionModel();
     transaction.setSenderDocumentTransaction(transactionDtoRequest.senderDocument());
     transaction.setReceiverDocumentTransaction(transactionDtoRequest.receiverDocument());
@@ -95,12 +98,9 @@ public class TransactionServices {
     transaction.setStatusTransaction(StatusTransactionEnum.successfull);
     transaction.setTimeStamp(LocalDateTime.now());
 
+    logger.info("Adding the link of hypertext");
     transaction.add(linkTo(methodOn(TransactionControllers.class)
             .getTransactionById(transaction.getIdTransaction())).withSelfRel());
-
-//    logger.info("creating the notify");
-//    notificationServices.sendNotification(senderUser);
-//    notificationServices.sendNotification(receiverUser);
 
     return transactionRepository.save(transaction);
   }

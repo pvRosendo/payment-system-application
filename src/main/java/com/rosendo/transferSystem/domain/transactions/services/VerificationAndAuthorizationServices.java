@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Objects;
 
+// TODO: fix the services of authorization and notification
 @Service
 public class VerificationAndAuthorizationServices {
 
